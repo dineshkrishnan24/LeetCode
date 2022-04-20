@@ -1,0 +1,59 @@
+Link: https://leetcode.com/problems/word-ladder/
+
+Question:
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: One shortest transformation sequence is "hit" -> "hot" -> "dot" -> "dog" -> cog", which is 5 words long.
+
+
+Input: beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+Output: 0
+Explanation: The endWord "cog" is not in wordList, therefore there is no valid transformation sequence.
+
+
+// BFS
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Set<String> dict = new HashSet<>(wordList);
+        // System.out.println("dics is "+dict);
+        if(!dict.contains(endWord)) {
+            return 0;
+        }
+        LinkedList<String> wordQueue = new LinkedList<>();
+        LinkedList<Integer> sizeQueue = new LinkedList<>();
+        
+        wordQueue.add(beginWord);
+        sizeQueue.add(1);
+        int result = Integer.MAX_VALUE;
+        while(!wordQueue.isEmpty()) {
+            // System.out.println("wordq is "+wordQueue);
+            String start = wordQueue.pop();
+            int size = sizeQueue.pop();
+            
+            if(start.equals(endWord)) {
+                // System.out.println("restult is "+result);
+                result = Math.min(result, size);
+            }
+            
+            
+            for(int i=0;i<start.length();i++) {
+                char[] arr = start.toCharArray();
+                for(char c='a';c<='z';c++) {
+                    arr[i] = c;
+                    String newWord = new String(arr);
+                    if(dict.contains(newWord)) {
+                        wordQueue.add(newWord);
+                        dict.remove(newWord);
+                        sizeQueue.add(size+1);
+                    }
+                }    
+            }
+            
+        }
+        // System.out.println("final restult is "+result);
+        if(result == Integer.MAX_VALUE)
+            return 0;
+        return result;
+        
+    }
+}
