@@ -49,7 +49,7 @@ class Solution {
             return arr[(m+n)/2];
     }
 
-    // solution 2
+    // solution 2`
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         if(nums1.length>nums2.length)
             return findMedianSortedArrays(nums2, nums1);
