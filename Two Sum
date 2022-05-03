@@ -11,12 +11,28 @@ Output: [1,2]
 
 
 class Solution {
+
+    // Solution 1 : O(nlogn)
     public int[] twoSum(int[] nums, int target) {
         int n = nums.length;
         for(int i=0;i<n;i++) {
             for(int j=i+1;j<n;j++){
                 if(nums[i]+nums[j] == target)
                     return new int[]{i,j};
+            }
+        }
+        return new int[]{0,1};
+    }
+
+    // Solution 2 : O(n)
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> numberMap = new HashMap<>();
+        
+        for(int i=0;i<nums.length;i++) {
+            if(numberMap.containsKey(nums[i])) {
+                return new int[]{numberMap.get(nums[i]),i};
+            } else {
+                numberMap.put(target-nums[i],i);
             }
         }
         return new int[]{0,1};
