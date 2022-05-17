@@ -1,0 +1,81 @@
+Link: https://leetcode.com/problems/binary-tree-level-order-traversal/
+
+Question:
+        3
+      /    \
+    9       20
+           /  \
+        15      7
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[9,20],[15,7]]
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+ // BFS
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root == null)
+            return new ArrayList<>();
+        List<List<Integer>> finalList = new ArrayList<>();
+        List<TreeNode> queue = new ArrayList<>();
+        queue.add(root);
+        while(queue.size() > 0) {
+            List<TreeNode> nextSet = new ArrayList<>();
+            List<Integer> valueList = new ArrayList<>();
+            for(TreeNode node: queue) {
+                if(node.left!=null) nextSet.add(node.left);
+                if(node.right!=null) nextSet.add(node.right);
+                valueList.add(node.val);
+            }
+            finalList.add(valueList);
+            queue = nextSet;
+        }
+        return finalList;
+    }
+    
+}
+
+
+// DFS
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if(root == null)
+            return new ArrayList<>();
+        Map<Integer, List<Integer>> levelMap = new HashMap<>();
+        levelOrder(root, 0, levelMap);
+        List<List<Integer>> finalList = new ArrayList<>();
+        levelMap.forEach((key,value)->{
+            // System.out.println(key+" = "+value);
+           finalList.add(value);
+        });
+        return finalList;
+    }
+    
+    public void levelOrder(TreeNode root, int level, Map<Integer, List<Integer>> levelMap) {
+        List<Integer> numList = levelMap.getOrDefault(level, new ArrayList<>());
+        numList.add(root.val);
+        levelMap.put(level, numList);
+        if(root.left != null) {
+            levelOrder(root.left, level+1, levelMap);
+        }
+        if(root.right != null) {
+            levelOrder(root.right, level+1, levelMap);
+        }
+    }
+}
