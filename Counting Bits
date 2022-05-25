@@ -1,0 +1,68 @@
+Link: https://leetcode.com/problems/counting-bits/
+
+Question:
+Given an integer n, return an array ans of length n + 1 such that for each i (0 <= i <= n), ans[i] is the number of 1's in the binary representation of i.
+
+ 
+
+Example 1:
+
+Input: n = 2
+Output: [0,1,1]
+Explanation:
+0 --> 0
+1 --> 1
+2 --> 10
+Example 2:
+
+Input: n = 5
+Output: [0,1,1,2,1,2]
+Explanation:
+0 --> 0
+1 --> 1
+2 --> 10
+3 --> 11
+4 --> 100
+5 --> 101
+
+
+// Dynamic Programing
+class Solution {
+    public int[] countBits(int n) {
+        if(n==0) {
+            return new int[]{0};
+        }
+        if(n==1) {
+            return new int[]{0,1};
+        }
+        int[] bitsArr = new int[n+1];
+        bitsArr[0] = 0;
+        bitsArr[1] = 1;
+        int ind = 2, i = 1;
+        for(int j=2;j<=n;j=j+2) {
+             bitsArr[j] = bitsArr[i];  
+            if(j+1<=n) {
+             bitsArr[j+1] = bitsArr[i]+1;    
+            }
+            i++;
+        }
+        
+        return bitsArr;
+    }
+}
+
+
+// optimal Solution using odd or even position
+class Solution {
+    public int[] countBits(int num) {
+        int[] a = new int[num+1];
+        for(int i=0;i<=num;i++) {
+            if(i%2 == 0) {
+                a[i] = a[i/2];
+            } else {
+                a[i] = a[i/2]+1;
+            }
+        }
+        return a;
+    }
+}
