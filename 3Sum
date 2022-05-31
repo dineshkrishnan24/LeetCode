@@ -1,0 +1,59 @@
+Link: https://leetcode.com/problems/3sum/
+
+Question:
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+Example 1:
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+Example 2:
+Input: nums = []
+Output: []
+
+Example 3:
+Input: nums = [0]
+Output: []
+
+
+// O(n^2)
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        int n = nums.length;
+        int target, val,start,end;
+        List<List<Integer>> finalList = new ArrayList<>();
+        if(n<3)
+            return finalList;
+        Arrays.sort(nums);
+        for(int i=0;i<n-2;i++) {
+            if(i==0 || nums[i]>nums[i-1]) {
+                target = -nums[i];
+                start = i+1;
+                end = n -1;
+                while(start<end) {
+                    if(nums[start]+nums[end] == target) {
+                       ArrayList<Integer> temp = new ArrayList<Integer>();
+                       temp.add(nums[i]);
+                       temp.add(nums[start]);
+                       temp.add(nums[end]);
+                        finalList.add(temp);
+                         start++;
+                        end--;
+                       while (start < end && end < n-1 && nums[end] == nums[end + 1])
+                         end--;
+                       while (start < end && start >0 && nums[start] == nums[start - 1])
+                         start++;
+                    } else if (nums[start] + nums[end] < target) {
+                        start++;
+                    } else {
+                        end--;
+                    }
+                }
+            }
+        }
+        return finalList;
+    }
+                
+}
