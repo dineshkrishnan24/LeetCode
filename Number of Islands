@@ -1,0 +1,81 @@
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+ 
+
+Example 1:
+
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+Example 2:
+
+Input: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+Output: 3
+ 
+
+Constraints:
+
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 300
+grid[i][j] is '0' or '1'.
+
+
+
+
+
+
+Solution:
+
+Time Complexity: O(N * M)
+Space Complexity: O(1)
+
+
+class Solution {
+    public int numIslands(char[][] grid) {
+        int numberOfIsland = 1;
+        while(true) {
+            int[] val = getLandPosition(grid);
+            if(val.length == 2) {
+                numberOfIsland++;
+                removeIsland(grid, val[0], val[1]);
+            } else {
+                return numberOfIsland-1;
+            }
+        }
+    }
+
+    public static int[] getLandPosition(char[][] grid) {
+        int[] position = new int[2];
+        for(int i=0; i < grid.length; i++) {
+            for(int j=0; j<grid[i].length; j++) {
+                if(grid[i][j] == '1')
+                    return new int[]{i,j};
+            }
+        }
+        return new int[0];
+    }
+    
+    public static void removeIsland(char[][] grid, int r, int c) {
+        int m = grid.length;
+        int n = grid[0].length;
+        if(r >= m || c >= n || r < 0 || c < 0 || grid[r][c] == '0' )
+            return;
+        grid[r][c] = '0';
+        removeIsland(grid, r-1, c);
+        removeIsland(grid, r, c-1);
+        removeIsland(grid, r+1, c);
+        removeIsland(grid, r, c+1);
+    }
+}
