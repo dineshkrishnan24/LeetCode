@@ -1,0 +1,77 @@
+You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
+
+The area of an island is the number of cells with a value 1 in the island.
+
+Return the maximum area of an island in grid. If there is no island, return 0.
+
+ 
+
+Example 1:
+
+
+Input: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+Output: 6
+Explanation: The answer is not 11, because the island must be connected 4-directionally.
+Example 2:
+
+Input: grid = [[0,0,0,0,0,0,0,0]]
+Output: 0
+ 
+
+Constraints:
+
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 50
+grid[i][j] is either 0 or 1.
+
+
+
+Solution:
+
+Time Complexity: O(N2)
+Space completely: O(1)
+
+
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int[] pos = new int[0];
+        int max = 0;
+        while(true) {
+            pos = getIslandPosition(grid);
+            if(pos.length == 2) {
+                int val = getIslandSize(grid, pos[0], pos[1]);
+                if(max < val) {
+                    max = val;
+                }
+            } else {
+                return max;
+            }
+        }
+    }
+
+    public static int[] getIslandPosition(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) {
+                if(grid[i][j]== 1)
+                    return new int[]{i,j};
+            }
+        }
+        return new int[0];
+    }
+
+    public static int getIslandSize(int[][] grid, int r, int c) {
+        int m = grid.length, n = grid[0].length;
+        if(r >= m || c >= n || r < 0 || c < 0 || grid[r][c] == 0) {
+            return 0;
+        }
+        grid[r][c] = 0;
+        int val = 1;
+        val += getIslandSize(grid, r-1, c);
+        val += getIslandSize(grid, r, c-1);
+        val += getIslandSize(grid, r+1, c);
+        val += getIslandSize(grid, r, c+1);
+        return val;
+    }
+}
