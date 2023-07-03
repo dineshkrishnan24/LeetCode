@@ -1,0 +1,65 @@
+package com.dino.google;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ArraySubsequence {
+
+    public static void main(String args[]) {
+        int[] arr = new int[]{1,2,1};
+        int sum = 2;
+        System.out.println("Print All subsequence :: ");
+        printSubsequence(arr, new ArrayList<Integer>(),0, 0, sum, arr.length);
+        System.out.println("Print Any one subsequence :: ");
+        printAnyOneSubsequence(arr, new ArrayList<Integer>(),0, 0, sum, arr.length);
+        System.out.println("count of :: "+printCountOfSubsequence(arr,0, 0, sum, arr.length));
+    }
+
+    private static void printSubsequence(int[] arr, List<Integer> ds, int ind, int currSum, int sum, int n) {
+        if(ind == n) {
+            if(currSum == sum) {
+                System.out.println(ds);
+            }
+            return;
+        }
+        ds.add(arr[ind]);
+        currSum += arr[ind];
+        printSubsequence(arr, ds, ind+1, currSum, sum, n);
+        ds.remove(ds.size()-1);
+        currSum -= arr[ind];
+        printSubsequence(arr, ds, ind+1, currSum, sum, n);
+    }
+
+    private static boolean printAnyOneSubsequence(int[] arr, List<Integer> ds, int ind, int currSum, int sum, int n) {
+        if(ind == n) {
+            if(currSum == sum) {
+                System.out.println(ds);
+                return true;
+            }
+            return false;
+        }
+        ds.add(arr[ind]);
+        currSum += arr[ind];
+        if(printAnyOneSubsequence(arr, ds, ind+1, currSum, sum, n)) {
+            return true;
+        }
+        ds.remove(ds.size()-1);
+        currSum -= arr[ind];
+        return printAnyOneSubsequence(arr, ds, ind+1, currSum, sum, n);
+    }
+
+    private static int printCountOfSubsequence(int[] arr, int ind, int currSum, int sum, int n) {
+        if(ind == n) {
+            if(currSum == sum) {
+                return 1;
+            }
+            return 0;
+        }
+        currSum += arr[ind];
+        int l = printCountOfSubsequence(arr, ind+1, currSum, sum, n);
+        currSum -= arr[ind];
+        int r = printCountOfSubsequence(arr, ind+1, currSum, sum, n);
+        return l+r;
+    }
+
+}
