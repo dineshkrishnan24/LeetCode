@@ -1,0 +1,73 @@
+Given a string s, return the number of distinct non-empty subsequences of s. Since the answer may be very large, return it modulo 109 + 7.
+
+A subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., "ace" is a subsequence of "abcde" while "aec" is not.
+ 
+
+Example 1:
+
+Input: s = "abc"
+Output: 7
+Explanation: The 7 distinct subsequences are "a", "b", "c", "ab", "ac", "bc", and "abc".
+Example 2:
+
+Input: s = "aba"
+Output: 6
+Explanation: The 6 distinct subsequences are "a", "b", "ab", "aa", "ba", and "aba".
+Example 3:
+
+Input: s = "aaa"
+Output: 3
+Explanation: The 3 distinct subsequences are "a", "aa" and "aaa".
+ 
+
+Constraints:
+
+1 <= s.length <= 2000
+s consists of lowercase English letters.
+
+
+Solution: Recurssion using set
+
+Time Complexity: O(2^N)
+Space Complexity: O(2^N)
+
+
+class Solution {
+    public int distinctSubseqII(String s) {
+        Set<String> set = new HashSet<>();
+        getAllSeq(s, "", 0, set);
+        // System.out.println(set);
+        return set.size()-1;
+    }
+
+    void getAllSeq(String s, String temp, int ind, Set<String> set) {
+        if(ind>=s.length()) {
+            return;
+        }
+        temp += s.charAt(ind)+"";
+        set.add(temp);
+        getAllSeq(s, temp, ind+1, set);
+        // System.out.print(temp);
+        temp = temp.substring(0, temp.length()-1);
+        set.add(temp);
+        // System.out.println(" = "+temp);
+        getAllSeq(s, temp, ind+1, set);
+    }
+}
+
+
+
+Solution: DP 
+
+
+class Solution {
+    public int distinctSubseqII(String s) {
+        final int kMod = 1_000_000_007;
+        long[] endsWith = new long[26];
+
+        for (final char c : s.toCharArray())
+            endsWith[c - 'a'] = (Arrays.stream(endsWith).sum() + 1) % kMod;
+
+        return (int) (Arrays.stream(endsWith).sum() % kMod);
+    }
+}
